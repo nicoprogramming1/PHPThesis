@@ -132,55 +132,58 @@ require_once 'header.inc.php'; ?>
 	                                <input type="hidden" name="BotonConsultar" value="1">
 	                            </div>
 	                        </div>
-	                        <table class="table">
-	                            <thead>
-	                                <tr>
-	                                    <?php require_once 'vercolumnas.bebidasConsultaPorMarca.inc.php'; ?>
-	                                </tr>
-	                            </thead>
-	                            <tbody>
-	                                <?php
-	                                if (!empty($_POST['BotonConsultar'])) {
-									    // Estoy en condiciones de poder validar los datos
-									    $selectedMarca = $_POST['marca'];
-									    $contador = 1;
-									    
-									    if ($selectedMarca === "todos") {
-									        // Mostrar todas las bebidas
-									        foreach ($ListadoBebidas as $bebida) {
-									            // Muestra los datos en la tabla
-									            echo '<tr>';
-									            echo '<td>' . $contador . '</td>';
-									            echo '<td>' . $bebida['IDBEBIDA'] . '</td>';
-									            echo '<td>' . $bebida['BEBIDA'] . '</td>';
-									            echo '<td>' . $bebida['VOLUMEN'] . '</td>';
-									            echo '</tr>';
-									            $contador++;
-									        }
-									    } else if (!empty($selectedMarca)) {
-									        // Mostrar detalles del proveedor seleccionado
-									        $detalleBebida = ObtenerBebidaPorMarca($MiConexion, $selectedMarca);
-									        
-									        if ($detalleBebida) {
-									            echo '<tr>';
-									            echo '<td>' . $contador . '</td>';
-									            echo '<td>' . $detalleBebida['IDBEBIDA'] . '</td>';
-									            echo '<td>' . $detalleBebida['BEBIDA'] . '</td>';
-									            echo '<td>' . $detalleBebida['VOLUMEN'] . '</td>';
-									            echo '</tr>';
-									            $contador++;
-									        } else {
-									            // Muestra un mensaje si no hay datos para la bebida seleccionada
-									            echo '<tr>';
-									            echo '<td colspan="7">No hay datos para esta bebida.</td>';
-									            echo '</tr>';
-									        }
-									    }
-									}
-	                                ?>
-	                            </tbody>
-	                            <?php require_once 'boton.imprimir.inc.php'; ?>
-	                        </table>
+	                        <div style="display: flex;">
+								<table class="table" style="width: 40%; text-align:center;">
+									<thead>
+										<tr>
+											<?php require_once 'vercolumnas.bebidasConsultaPorMarca.inc.php'; ?>
+										</tr>
+									</thead>
+									<tbody>
+										<?php
+										if (!empty($_POST['BotonConsultar'])) {
+																		// Estoy en condiciones de poder validar los datos
+																		$selectedMarca = $_POST['marca'];
+																		$contador = 1;
+																		
+																		if ($selectedMarca === "todos") {
+																			// Mostrar todas las bebidas
+																			foreach ($ListadoBebidas as $bebida) {
+																				// Muestra los datos en la tabla
+																				echo '<tr>';
+																				echo '<td>' . $contador . '</td>';
+																				echo '<td>' . $bebida['IDBEBIDA'] . '</td>';
+																				echo '<td>' . $bebida['BEBIDA'] . '</td>';
+																				echo '<td>' . $bebida['VOLUMEN'] . '</td>';
+																				echo '</tr>';
+																				$contador++;
+																			}
+																		} else if (!empty($selectedMarca)) {
+																			// Mostrar detalles del proveedor seleccionado
+																			$detalleBebida = ObtenerBebidaPorMarca($MiConexion, $selectedMarca);
+																			
+																			if ($detalleBebida) {
+																				echo '<tr>';
+																				echo '<td>' . $contador . '</td>';
+																				echo '<td>' . $detalleBebida['IDBEBIDA'] . '</td>';
+																				echo '<td>' . $detalleBebida['BEBIDA'] . '</td>';
+																				echo '<td>' . $detalleBebida['VOLUMEN'] . '</td>';
+																				echo '</tr>';
+																				$contador++;
+																			} else {
+																				// Muestra un mensaje si no hay datos para la bebida seleccionada
+																				echo '<tr>';
+																				echo '<td colspan="7">No hay datos para esta bebida.</td>';
+																				echo '</tr>';
+																			}
+																		}
+																	}
+										?>
+									</tbody>
+									<?php require_once 'boton.imprimir.inc.php'; ?>
+								</table>
+								<!-- aqui quiero el grafico de barras con un styline inline de width 45% -->
+							</div>
                         </form>
                     </div>
                 </div>
