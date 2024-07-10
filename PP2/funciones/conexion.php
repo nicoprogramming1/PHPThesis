@@ -1,6 +1,6 @@
 <?php
 
-function ConexionBD($Host = 'localhost' ,  $User = 'root',  $Password = 'root', $BaseDeDatos='PP3' ) {
+function ConexionBD($Host = 'mysql' ,  $User = 'root',  $Password = 'root', $BaseDeDatos='pp3' ) {
 
     $linkConexion = mysqli_connect($Host, $User, $Password, $BaseDeDatos);
     if ($linkConexion!=false) 
