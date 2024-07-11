@@ -122,7 +122,9 @@ require_once 'header.inc.php';
                                             <input type="hidden" name="BotonConsultar" value="1">
                                         </div>
                                     </div>
-                                    <table class="table">
+                                </form>
+                                <div style="display: flex; gap:100px;">
+                                    <table class="table" style="width: 40%;">
                                         <thead>
                                             <tr>
                                                 <?php require_once 'vercolumnas.ventas.consultas.inc.php'; ?>
@@ -133,7 +135,6 @@ require_once 'header.inc.php';
                                             if (!empty($_POST['BotonConsultar'])) {
                                                 $selectedEvento = $_POST['eventos'];
                                                 $contador = 1;
-
                                                 if ($selectedEvento === "todos") {
                                                     foreach ($ListadoEventos as $evento) {
                                                         echo '<tr>';
@@ -171,9 +172,24 @@ require_once 'header.inc.php';
                                             }
                                             ?>
                                         </tbody>
-                                        <?php require_once 'boton.imprimir.inc.php'; ?>
                                     </table>
-                                </form>
+                                    <?php
+                                    if (!empty($_POST['BotonConsultar'])) {
+                                        $selectedEvento = $_POST['eventos'];
+                                        if ($selectedEvento === "todos") {
+                                            echo "  <div style='display:flex; flex-wrap:wrap'>
+                                                        <div style='width: 100%;'>
+                                                            <canvas id='myChart'></canvas>
+                                                        </div></br>
+                                                        <!-- Botón e función de impresión -->
+                                                        <div style='margin-top: 20px; margin-left: auto; margin-right: 100px;'>
+                                                            <button class='btn btn-secondary' onclick='printSection()'>Imprimir</button>
+                                                        </div>
+                                                    </div>";
+                                            }
+                                    }
+                                    ?>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -181,7 +197,119 @@ require_once 'header.inc.php';
             </div>
         </div>
     </section>
+
+    <div id="printSection" style="display:none;">
+        <h5 class="m-b-10">Administración de ventas</h5>
+        <table class="table" style="width: 100%;">
+            <thead>
+                <tr>
+                    <?php require_once 'vercolumnas.ventas.consultas.inc.php'; ?>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                if (!empty($_POST['BotonConsultar'])) {
+                    $selectedEvento = $_POST['eventos'];
+                    $contador = 1;
+                    if ($selectedEvento === "todos") {
+                        foreach ($ListadoEventos as $evento) {
+                            echo '<tr>';
+                            echo '<td>' . $contador . '</td>';
+                            echo '<td>' . $evento['IDEVENTO'] . '</td>';
+                            echo '<td>' . $evento['DETALLEEVENTO'] . '</td>';
+                            // Formatear la fechaEvento a dd/mm/aaaa antes de imprimir en la tabla
+                            $fechaEventoFormateada = date('d/m/Y', strtotime($evento['FECHAEVENTO']));
+                            echo '<td>' . $fechaEventoFormateada . '</td>';
+                            echo '<td>' . countVentasEvento($MiConexion, $evento['IDEVENTO']) . '</td>';
+                            echo '<td>' . $ganancia[totalVentasEvento($MiConexion, $evento['IDEVENTO'])] . '</td>';
+                            echo '</tr>';
+                            $contador++;
+                        }
+                    }
+                }
+                ?>
+            </tbody>
+        </table>
+        <canvas id="printChart" width="100%"></canvas>
+    </div>
+
     <?php require_once 'footer.inc.php'; ?>
-    <?php require_once 'funciones/script.imprimir.inc.php'; ?>
+    
+    <!-- Script para Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+    var eventos = [];
+    var ganancias = [];
+
+    <?php
+    foreach ($ListadoEventos as $evento) {
+        $eventoId = $evento['IDEVENTO'];
+        $nombreEvento = $evento['DETALLEEVENTO'];
+        $gananciaEvento = totalVentasEvento($MiConexion, $eventoId);
+
+        echo "eventos.push('$nombreEvento');";
+        echo "ganancias.push($gananciaEvento);";
+    }
+    ?>
+
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: eventos,
+            datasets: [{
+                label: 'Ganancia por Evento',
+                data: ganancias,
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    function printSection() {
+        const printSection = document.getElementById('printSection');
+        const chartData = <?php echo json_encode(['eventos' => $eventos, 'ganancias' => $ganancias]); ?>;
+
+        // Renderizar el gráfico de la sección de impresión
+        var ctxPrint = document.getElementById('printChart').getContext('2d');
+        var myPrintChart = new Chart(ctxPrint, {
+            type: 'bar',
+            data: {
+                labels: chartData.eventos,
+                datasets: [{
+                    label: 'Ganancia por Evento',
+                    data: chartData.ganancias,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Mostrar la sección de impresión
+        printSection.style.display = 'block';
+
+        // Esperar un momento para que el gráfico se renderice correctamente antes de imprimir
+        setTimeout(() => {
+            window.print();
+            printSection.style.display = 'none';
+        }, 1000);
+    }
+</script>
 </body>
 </html>
