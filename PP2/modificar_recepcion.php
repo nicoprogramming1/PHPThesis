@@ -29,124 +29,88 @@ $ListadoBebidas = Listar_Bebidas($MiConexion);
 $CantidadBebidas = count($ListadoBebidas);
 
 if (isset($_GET['id'])) {
-    // Obtener el ID de la recepción seleccionada desde la URL
     $idRecepcionModificar = $_GET['id'];
 
-    // Verificar que el ID de la recepción no esté vacío o sea un valor no válido
     if (empty($idRecepcionModificar) || !is_numeric($idRecepcionModificar)) {
-        // Si el ID es inválido, redirigir a la página principal o mostrar un mensaje de error
         header('Location: listado_recepciones.php');
         exit;
     }
 
-    // Cargar los datos de la recepción seleccionada desde la base de datos
     $recepcionAModificar = ObtenerRecepcionPorId($MiConexion, $idRecepcionModificar);
 
     if (empty($recepcionAModificar)) {
-	    // Si no se encontró la recepcion para modificar, redirigir al listado de recepciones
-	    header('Location: listado_recepciones.php');
-	    exit;
-	}
+        header('Location: listado_recepciones.php');
+        exit;
+    }
 
-	$idRecepcionCompra = $recepcionAModificar['IDRECEPCIONCOMPRA'];
-	$estadoRecepcion = $recepcionAModificar['ESTADORECEPCION'];
-	$idEstadoRecepcion = $recepcionAModificar['IDESTADORECEPCION'];
-	$fechaRecepcionCompra = date('d/m/y', strtotime($recepcionAModificar['FECHARECEPCIONCOMPRA']));
-	$idCompra = $recepcionAModificar['IDCOMPRA'];
-	$detalleRecepcion = $recepcionAModificar['DETALLERECEPCION'];
-	$idRemito = $recepcionAModificar['IDREMITO'];
-	$detalleRemito = $recepcionAModificar['DETALLEREMITO'];
-	$nroRemito = $recepcionAModificar['NROREMITO'];
-	$remito = $recepcionAModificar['REMITO'];
-	$fechaRemito = date('d/m/y', strtotime($recepcionAModificar['FECHAREMITO']));
-	$detalleMercaderia = $recepcionAModificar['DETALLEMERCADERIA'];
+    $idRecepcionCompra = $recepcionAModificar['IDRECEPCIONCOMPRA'];
+    $estadoRecepcion = $recepcionAModificar['ESTADORECEPCION'];
+    $idEstadoRecepcion = $recepcionAModificar['IDESTADORECEPCION'];
+    $fechaRecepcionCompra = date('d/m/y', strtotime($recepcionAModificar['FECHARECEPCIONCOMPRA']));
+    $idCompra = $recepcionAModificar['IDCOMPRA'];
+    $detalleRecepcion = $recepcionAModificar['DETALLERECEPCION'];
+    $idRemito = $recepcionAModificar['IDREMITO'];
+    $detalleRemito = $recepcionAModificar['DETALLEREMITO'];
+    $nroRemito = $recepcionAModificar['NROREMITO'];
+    $remito = $recepcionAModificar['REMITO'];
+    $fechaRemito = date('d/m/y', strtotime($recepcionAModificar['FECHAREMITO']));
+    $detalleMercaderia = $recepcionAModificar['DETALLEMERCADERIA'];
 
 } else {
-    // Si no se recibió el parámetro 'id' en la URL, redirigir a la página principal o mostrar un mensaje de error
     header('Location: index.php');
     exit;
 }
 
-// Procesar el formulario de modificación
-if (!empty($_POST['BotonGuardar'])) {
-    // Estoy en condiciones de poder validar los datos
-    $Mensaje='';
-    $Mensaje = Validar_Datos_Modificar_Recepcion();
-    if (empty($Mensaje)) {
-        // Obtener los nuevos valores del formulario
-		$idEstadoRecepcion = $_POST['estadoRecepcion'];
-		$fechaRecepcionCompra = $_POST['fechaRecepcion'];
-		$idCompra = $_POST['compra'];
-		$detalleRecepcion = $_POST['detalleRecepcion'];
-		$detalleRemito = $_POST['detalleRemito'];
-		$nroRemito = $_POST['nroRemito'];
-		$fechaRemito = $_POST['fechaRemito'];
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $Mensaje = '';
+    $idEstadoRecepcion = $_POST['estadoRecepcion'];
+    $fechaRecepcionCompra = $_POST['fechaRecepcion'];
+    $idCompra = $_POST['compra'];
+    $detalleRecepcion = $_POST['detalleRecepcion'];
+    $detalleRemito = $_POST['detalleRemito'];
+    $nroRemito = $_POST['nroRemito'];
+    $fechaRemito = $_POST['fechaRemito'];
 
-		// Manejar la actualización de la imagen del remito si es necesario
-        if (!empty($_FILES['remito']['tmp_name'])) {
-            $remito = file_get_contents($_FILES['remito']['tmp_name']);
-        } else {
-            $remito = ''; // Mantener la imagen existente
-        }
-
-        // Actualizar la compra en la base de datos
-        if (actualizarRecepcion($MiConexion, $idRecepcionModificar, $idEstadoRecepcion, $fechaRecepcionCompra, $idCompra, $detalleRecepcion, $detalleRemito, $nroRemito, $remito, $fechaRemito, $idRemito)) {
-            $Mensaje = 'Recepción actualizada exitosamente.';
-            $Estilo = 'success';
-        } else {
-            $Mensaje = 'Error al actualizar la recepción.';
-            $Estilo = 'danger';
-        }
-    }
-}
-
-// Procesar el formulario de modificación
-if (!empty($_POST['BotonModificarMercaderia'])) {
-    // Estoy en condiciones de poder validar los datos
-     echo "Se ha presionado el botón para modificar mercadería";
-    $Mensaje='';
-    $Mensaje = Validar_Datos_Modificar_Recepcion();
-    if (empty($Mensaje)) {
-        // Obtener los nuevos valores del formulario
-		$idEstadoRecepcion = $_POST['estadoRecepcion'];
-		$fechaRecepcionCompra = $_POST['fechaRecepcion'];
-		$idCompra = $_POST['compra'];
-		$detalleRecepcion = $_POST['detalleRecepcion'];
-		$detalleRemito = $_POST['detalleRemito'];
-		$nroRemito = $_POST['nroRemito'];
-		$fechaRemito = $_POST['fechaRemito'];
-
-		// Manejar la actualización de la imagen del remito si es necesario
-        if (!empty($_FILES['remito']['tmp_name'])) {
-            $remito = file_get_contents($_FILES['remito']['tmp_name']);
-        } else {
-            $remito = ''; // Mantener la imagen existente
-        }
-
-        // Actualizar la compra en la base de datos
-        if (actualizarRecepcion($MiConexion, $idRecepcionModificar, $idEstadoRecepcion, $fechaRecepcionCompra, $idCompra, $detalleRecepcion, $detalleRemito, $nroRemito, $remito, $fechaRemito, $idRemito)) {
-            $Mensaje = 'Recepción actualizada exitosamente.';
-            $Estilo = 'success';
-
-            header('Location: restar_bebidas.php?id=' . $idRecepcionCompra);
-        	exit;
-        } else {
-            $Mensaje = 'Error al actualizar la recepción.';
-            $Estilo = 'danger';
-        }
-    }
-}
-
-if (isset($_POST['BotonCancelar'])) {
-    if (cancelarRecepcion($MiConexion, $idRecepcionModificar)) {
-        $Mensaje = 'Se ha cancelado correctamente la recepción.';
-        $Estilo = 'success';
-        // Redirigir a la lista recepciónes después de la cancelacion exitosa
-        header('Location: listado_recepciones.php');
-        exit;
+    if (!empty($_FILES['remito']['tmp_name'])) {
+        $remito = file_get_contents($_FILES['remito']['tmp_name']);
     } else {
-        $Mensaje = 'Error al cancelar la recepción.';
-        $Estilo = 'danger';
+        $remito = '';
+    }
+
+    if (isset($_POST['BotonGuardar'])) {
+        $Mensaje = Validar_Datos_Modificar_Recepcion();
+        if (empty($Mensaje)) {
+            if (actualizarRecepcion($MiConexion, $idRecepcionModificar, $idEstadoRecepcion, $fechaRecepcionCompra, $idCompra, $detalleRecepcion, $detalleRemito, $nroRemito, $remito, $fechaRemito, $idRemito)) {
+                $Mensaje = 'Recepción actualizada exitosamente.';
+                $Estilo = 'success';
+                header('Location: listado_recepciones.php');
+                exit;
+            } else {
+                $Mensaje = 'Error al actualizar la recepción.';
+                $Estilo = 'danger';
+            }
+        }
+    } elseif (isset($_POST['BotonModificarMercaderia'])) {
+        $Mensaje = Validar_Datos_Modificar_Recepcion();
+        if (empty($Mensaje)) {
+            if (actualizarRecepcion($MiConexion, $idRecepcionModificar, $idEstadoRecepcion, $fechaRecepcionCompra, $idCompra, $detalleRecepcion, $detalleRemito, $nroRemito, $remito, $fechaRemito, $idRemito)) {
+                header('Location: restar_bebidas.php?id=' . $idRecepcionCompra);
+                exit;
+            } else {
+                $Mensaje = 'Error al actualizar la recepción.';
+                $Estilo = 'danger';
+            }
+        }
+    } elseif (isset($_POST['BotonCancelar'])) {
+        if (cancelarRecepcion($MiConexion, $idRecepcionModificar)) {
+            $Mensaje = 'Se ha cancelado correctamente la recepción.';
+            $Estilo = 'success';
+            header('Location: listado_recepciones.php');
+            exit;
+        } else {
+            $Mensaje = 'Error al cancelar la recepción.';
+            $Estilo = 'danger';
+        }
     }
 }
 
