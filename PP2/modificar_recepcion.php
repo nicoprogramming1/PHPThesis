@@ -304,14 +304,12 @@ require_once 'header.inc.php';
                     </div>
                 </div>
                 <div class="col-md-12">
-
-					<button class="btn btn-primary" type="submit" value="BotonGuardar" name="BotonGuardar">Guardar Cambios</button>
+                    <button class="btn btn-primary" type="submit" name="BotonGuardar">Guardar Cambios</button>
 
 			        <!-- Botón para "Guardar cambios y modificar mercadería" -->
 			        <button type="submit" class="btn btn-primary" name="BotonModificarMercaderia">Guardar Cambios y Modificar Mercadería</button>
-			        <input type="hidden" name="BotonModificarMercaderia" value="1">
 
-					<button type="submit" class="btn btn-danger" name="BotonCancelar" onclick="return confirm('¿Estás seguro de que deseas cancelar esta recepción?')">Cancelar recepción</button>
+			        <button type="submit" class="btn btn-danger" name="BotonCancelar" onclick="return confirm('¿Estás seguro de que deseas cancelar esta recepción?')">Cancelar recepción</button>
 				    <a class="btn btn-secondary" href="listado_recepciones.php" role="button">Volver al listado</a>
 				</div>
             </form>
