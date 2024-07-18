@@ -16,5 +16,3 @@ function ObtenerListaCompras($conexion) {
     return $ListadoCompras;
 }
 ?>
-
-<!-- lo uso al menos en cargar_recepcionCompra (para elegir de la lista de compras) -->

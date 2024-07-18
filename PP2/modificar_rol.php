@@ -21,7 +21,7 @@ if (isset($_GET['id'])) {
     }
 
     // Llamar a la función para buscar el nombre del rol por su ID
-    require_once 'funciones/buscarNombreRolPorID.php';
+    require_once 'funciones/buscarNombreRolPorId.php';
     $nombreRolSeleccionado = buscarNombreRolPorID($MiConexion, $rolSeleccionadoID);
 
     // Verificar que se haya encontrado el nombre del rol

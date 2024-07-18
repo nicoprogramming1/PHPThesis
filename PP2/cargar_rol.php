@@ -10,7 +10,7 @@ require_once 'funciones/conexion.php';
 $MiConexion=ConexionBD(); 
 
 require_once 'funciones/select_roles.php';
-$ListadoRoles = Listar_Roles($MiConexion);
+$ListadoRoles = ListarRoles($MiConexion);
 $CantidadRoles= count($ListadoRoles);
 
 require_once 'funciones/validaciones.php';
