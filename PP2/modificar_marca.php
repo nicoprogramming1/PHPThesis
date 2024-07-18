@@ -47,6 +47,8 @@ if (!empty($_POST['BotonGuardar'])) {
         if (actualizarMarca($MiConexion, $idMarcaAModificar, $marca)) {
             $Mensaje = 'Marca actualizada exitosamente.';
             $Estilo = 'success';
+			header('Location: listado_marcas.php');
+        exit;
         } else {
             $Mensaje = 'Error al actualizar la marca.';
             $Estilo = 'danger';
@@ -60,8 +62,6 @@ if (isset($_POST['BotonCancelar'])) {
         $Mensaje = 'Se ha eliminado la marca.';
         $Estilo = 'success';
         // Redirigir a la lista marcas después de la cancelacion exitosa
-        header('Location: listado_marcas.php');
-        exit;
     } else {
         $Mensaje = 'Error al eliminar la marca.';
         $Estilo = 'danger';

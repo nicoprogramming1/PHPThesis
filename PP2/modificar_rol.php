@@ -82,6 +82,7 @@ if (!empty($_POST['BotonModificar'])) {
             $Mensaje = 'Se ha modificado correctamente el nombre del rol.';
             $_POST = array();
             $Estilo = 'success';
+            $nombreRolSeleccionado = "";
             // Actualizar el nombre del rol seleccionado con el nuevo nombre en la variable para mostrar en el formulario
             $rolSeleccionado['NOMBRE'] = $nuevoNombreRol;
         } else {

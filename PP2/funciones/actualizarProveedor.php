@@ -1,5 +1,5 @@
 <?php 
-function actualizarProveedor($MiConexion, $idProveedorAModificar, $nombreProveedor, $cuil, $email, $idEmail, $telefono, $idTelefono, $domicilio, $idDomicilio, $ciudad, $idCiudad) {
+function actualizarProveedor($MiConexion, $idProveedorAModificar, $nombreProveedor, $cuil, $email, $idEmail, $telefono, $idTelefono, $domicilio, $idDomicilio, $idCiudad) {
 
     // Sanitiza y verifica los datos para evitar SQL injection
     $idProveedorAModificar = mysqli_real_escape_string($MiConexion, $idProveedorAModificar);
@@ -8,7 +8,7 @@ function actualizarProveedor($MiConexion, $idProveedorAModificar, $nombreProveed
     $email = mysqli_real_escape_string($MiConexion, $email);
     $telefono = mysqli_real_escape_string($MiConexion, $telefono);
     $domicilio = mysqli_real_escape_string($MiConexion, $domicilio);
-    $ciudad = mysqli_real_escape_string($MiConexion, $ciudad);
+    $idCiudad = mysqli_real_escape_string($MiConexion, $idCiudad);
 
     // Consulta SQL para actualizar el proveedor
     $SQL = "UPDATE proveedor SET 
@@ -25,7 +25,8 @@ function actualizarProveedor($MiConexion, $idProveedorAModificar, $nombreProveed
     $resultado1 = mysqli_query($MiConexion, $SQL1);
 
     $SQL2 = "UPDATE domicilio SET 
-            domicilio = '$domicilio'
+            domicilio = '$domicilio',
+            idCiudad = '$idCiudad'
             WHERE idDomicilio = '$idDomicilio'";
 
     $resultado2 = mysqli_query($MiConexion, $SQL2);

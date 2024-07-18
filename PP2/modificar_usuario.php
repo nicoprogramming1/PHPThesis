@@ -65,6 +65,8 @@ if (!empty($_POST['BotonGuardar'])) {
         if (actualizarUsuario($MiConexion, $idUsuarioModificar)) {
             $Mensaje = 'Usuario actualizado exitosamente.';
             $Estilo = 'success';
+			header('Location: listado_usuarios.php');
+        exit;
         } else {
             $Mensaje = 'Error al actualizar el usuario.';
             $Estilo = 'danger';
