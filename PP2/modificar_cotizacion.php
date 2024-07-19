@@ -67,7 +67,7 @@ if (!empty($_POST['BotonGuardar'])) {
         $detalleCotizacion = $_POST['detalleCotizacion'];
         $fechaCotizacion = $_POST['fechaCotizacion'];
         $cotizacionTexto = $_POST['cotizacionTexto'];
-        $nombreProveedor = $_POST['nombreProveedor'];
+        $idProveedorSeleccionado = $_POST['nombreProveedor'];
 
         // Manejar la actualización de la imagen de la cotizacion si es necesario
         if (!empty($_FILES['cotizacionImagen']['tmp_name'])) {
@@ -77,7 +77,7 @@ if (!empty($_POST['BotonGuardar'])) {
         }
 
         // Actualizar la cotizacion en la base de datos
-        if (actualizarCotizacion($MiConexion, $idCotizacionModificar, $fechaCotizacion, $cotizacionTexto, $imagenNueva, $detalleCotizacion, $idProveedor)) {
+        if (actualizarCotizacion($MiConexion, $idCotizacionModificar, $fechaCotizacion, $cotizacionTexto, $imagenNueva, $detalleCotizacion, $idProveedorSeleccionado)) {
             $Mensaje = 'Cotización actualizada exitosamente.';
             $Estilo = 'success';
         } else {

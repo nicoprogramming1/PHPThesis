@@ -10,6 +10,7 @@ require_once 'funciones/conexion.php';
 $MiConexion = ConexionBD();
 
 require_once 'funciones/select_facturas.php';
+require_once 'funciones/eliminarFactura.php';
 require_once 'funciones/validaciones.php';
 
 $Mensaje = '';
@@ -91,19 +92,13 @@ if (!empty($_POST['BotonGuardar'])) {
 
 if (isset($_POST['BotonCancelar'])) {
 
-	$idProveedor = $proveedorAModificar['IDPROVEEDOR'];
-    $idEmail = $proveedorAModificar['IDEMAIL'];
-    $idTelefono = $proveedorAModificar['IDTELEFONO'];
-    $idDomicilio = $proveedorAModificar['IDDOMICILIO'];
-
-    if (eliminarProveedor($MiConexion, $idProveedor, $idEmail, $idTelefono, $idDomicilio)) {
-        $Mensaje = 'Se ha eliminado el proveedor.';
+    if (eliminarFactura($MiConexion, $idFacturaModificar)) {
+        $Mensaje = 'Se ha eliminado la factura.';
         $Estilo = 'success';
-        // Redirigir a la lista compras después de la cancelacion exitosa
-        header('Location: listado_proveedores.php');
+        header('Location: listado_facturas.php');
         exit;
     } else {
-        $Mensaje = 'Error al el eliminar el proveedor.';
+        $Mensaje = 'Error al eliminar la factura.';
         $Estilo = 'danger';
     }
 }
