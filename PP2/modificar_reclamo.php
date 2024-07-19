@@ -68,7 +68,7 @@ if (!empty($_POST['BotonGuardar'])) {
     if (empty($Mensaje)) {
         // Obtener los nuevos valores del formulario
 		$detalleReclamo = $_POST['detalleReclamo'];
-		$idReclamo = $_POST['recepcionCompra'];
+		$idRecepcionCompra = $_POST['recepcionCompra'];
 		$idProveedor = $_POST['proveedor'];
 
         // Actualizar la compra en la base de datos
