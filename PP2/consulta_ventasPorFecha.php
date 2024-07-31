@@ -133,7 +133,6 @@ require_once 'header.inc.php';
                                             if (!empty($_POST['BotonConsultar'])) {
                                                 $selectedFecha1 = $_POST['fechaVenta1'];
                                                 $selectedFecha2 = $_POST['fechaVenta2'];
-                                                $contador = 1;
 
                                                 // Consulta SQL para obtener las ventas entre las fechas seleccionadas
                                                 $sql = "SELECT v.idVenta, u.apellido, v.fechaVenta, dt.totalVenta, e.detalleEvento
@@ -141,12 +140,26 @@ require_once 'header.inc.php';
                                                         INNER JOIN detalle_venta dt ON v.idVenta = dt.idVenta
                                                         INNER JOIN evento e ON dt.idEvento = e.idEvento
                                                         INNER JOIN usuarios u ON v.idCajero = u.idUsuario
-                                                        WHERE v.fechaVenta BETWEEN '$selectedFecha1' AND '$selectedFecha2'";
+                                                        WHERE v.fechaVenta BETWEEN '$selectedFecha1' AND '$selectedFecha2'
+                                                        ORDER BY v.fechaVenta DESC";
 
                                                 // Ejecutar la consulta y procesar los resultados
                                                 $result = mysqli_query($MiConexion, $sql);
+                                            }
+                                            else {
+                                                $sql = "SELECT v.idVenta, u.apellido, v.fechaVenta, dt.totalVenta, e.detalleEvento
+                                                        FROM venta v
+                                                        INNER JOIN detalle_venta dt ON v.idVenta = dt.idVenta
+                                                        INNER JOIN evento e ON dt.idEvento = e.idEvento
+                                                        INNER JOIN usuarios u ON v.idCajero = u.idUsuario
+                                                        ORDER BY v.fechaVenta DESC";
+
+                                                // Ejecutar la consulta y procesar los resultados
+                                                $result = mysqli_query($MiConexion, $sql);
+                                            }
 
                                                 if ($result) {
+                                                    $contador = 1;
                                                     // Iterar sobre los resultados y mostrar la lista de ventas
                                                     while ($row = mysqli_fetch_assoc($result)) {
                                                         // Aquí puedes mostrar cada fila de la consulta como desees
@@ -163,7 +176,6 @@ require_once 'header.inc.php';
                                                     // Manejar cualquier error de consulta
                                                     echo "Error al ejecutar la consulta: " . mysqli_error($MiConexion);
                                                 }
-                                            }
                                             ?>
                                         </tbody>
                                     </table>

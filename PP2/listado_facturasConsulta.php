@@ -117,9 +117,10 @@ require_once 'header.inc.php'; ?>
 					                    <input type="date" class="form-control" id="fechaFin" name="fechaFin">
 					                </div>
 					            </div>
-					            <div class="col-md-12">
-						            <button type="submit" class="btn btn-primary" name="consultar">Consultar</button>
-						        </div>
+					            <div class="form-group col-md-2">
+									<button type="submit" class="btn btn-primary" name="BotonConsultar">Consultar</button>
+									<input type="hidden" name="BotonConsultar" value="1">
+								</div>
 						        <table class="table">
 						            <thead>
 						                <tr>
@@ -132,6 +133,7 @@ require_once 'header.inc.php'; ?>
 						        </table>
 						        <div class="col-md-12">
 						            <a class="btn btn-light" href="index.php" role="button">Volver a Home</a>
+									<?php require_once 'boton.imprimir.inc.php'; ?>
 						        </div>
 						    </div>
 						</form>
@@ -142,3 +144,4 @@ require_once 'header.inc.php'; ?>
 
 </section>
 <?php require_once 'footer.inc.php'; ?>
+<?php require_once 'funciones/script.imprimir.inc.php'; ?>
