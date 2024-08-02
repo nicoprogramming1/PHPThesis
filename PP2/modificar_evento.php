@@ -30,16 +30,16 @@ if (isset($_GET['id'])) {
         exit;
     }
 
-// Cargar los datos del evento seleccionado desde la base de datos
-$eventoAModificar = ObtenerEventoPorId($MiConexion, $idEventoModificar);
+    // Cargar los datos del evento seleccionado desde la base de datos
+    $eventoAModificar = ObtenerEventoPorId($MiConexion, $idEventoModificar);
 
-$fechaEvento = date('d/m/y', strtotime($eventoAModificar['FECHAEVENTO']));
+    if (empty($eventoAModificar)) {
+        // Si no se encontró el evento para modificar, redirigir al listado de eventos
+        header('Location: listado_eventos.php');
+        exit;
+    }
 
-if (empty($eventoAModificar)) {
-    // Si no se encontró el evento para modificar, redirigir al listado de eventos
-    header('Location: listado_eventos.php');
-    exit;
-}
+    $fechaEvento = date('d/m/y', strtotime($eventoAModificar['FECHAEVENTO']));
 } else {
     // Si no se recibió el parámetro 'id' en la URL, redirigir a la página principal o mostrar un mensaje de error
     header('Location: index.php');
@@ -47,13 +47,12 @@ if (empty($eventoAModificar)) {
 }
 
 if (!empty($_POST['BotonEliminar'])) {
-
     // Llamada a la función EliminarEvento pasando el id del evento a eliminar
     if (eliminarEventoPorId($MiConexion, $idEventoModificar)) {
         $Mensaje = 'Se ha eliminado correctamente el evento.';
         $Estilo = 'success';
         header('Location: listado_eventos.php');
-    	exit;
+        exit;
     } else {
         $Mensaje = 'Error al eliminar el evento.';
         $Estilo = 'danger';
@@ -66,7 +65,7 @@ if (!empty($_POST['BotonGuardar'])) {
     $Mensaje = Validar_Modificar_Evento();
     if (empty($Mensaje)) {
         // Obtener los nuevos valores del formulario
-        $nuevaFecha =$_POST['fechaEvento'];
+        $nuevaFecha = $_POST['fechaEvento'];
         $nuevoDetalle = $_POST['detalleEvento'];
 
         // Actualizar el evento en la base de datos
@@ -154,27 +153,25 @@ require_once 'header.inc.php';
             <?php require_once 'alertas.inc.php'; ?>
 
             <form role="form" method="post">
-                <div class="row">
-                    <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="fechaEvento" class="form-label">Fecha del evento (*)</label>
+                                <input type="text" class="form-control" id="fechaEvento" name="fechaEvento" placeholder="Selecciona la fecha del evento" value="<?php echo $fechaEvento; ?>">
+                            </div>
 
-					    <div class="mb-3">
-						    <label for="fechaEvento" class="form-label">Fecha del evento (*)</label>
-						    <input type="text" class="form-control" id="fechaEvento" name="fechaEvento" placeholder="Selecciona la fecha del evento" value="<?php echo $fechaEvento; ?>">
-						</div>
-
-					    <div class="mb-3">
-					        <label for="detalleEvento" class="form-label">Detalle del evento (*)</label>
-					        <input type="text" class="form-control" id="detalleEvento" name="detalleEvento" value="<?php echo $eventoAModificar['DETALLEEVENTO']; ?>">
-					    </div>
-					</div>
-                </div>
-                <div class="col-md-12">
-					<button class="btn btn-primary" type="submit" value="Guardar" name="BotonGuardar">Guardar Cambios</button>
-				    <button class="btn btn-danger" type="submit" name="BotonEliminar" onclick="return confirm('¿Estás seguro de que deseas eliminar este evento?')">Eliminar Evento</button>
-				    <input type="hidden" name="BotonEliminar" value="1">
-				    <a class="btn btn-secondary" href="listado_eventos.php" role="button">Cancelar</a>
-				</div>
-            </form>
+                            <div class="mb-3">
+                                <label for="detalleEvento" class="form-label">Detalle del evento (*)</label>
+                                <input type="text" class="form-control" id="detalleEvento" name="detalleEvento" value="<?php echo $eventoAModificar['DETALLEEVENTO']; ?>">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <button class="btn btn-primary" type="submit" value="Guardar" name="BotonGuardar">Guardar Cambios</button>
+                        <button class="btn btn-danger" type="submit" name="BotonEliminar" onclick="return confirm('¿Estás seguro de que deseas eliminar este evento?')">Eliminar Evento</button>
+                        <a class="btn btn-secondary" href="listado_eventos.php" role="button">Cancelar</a>
+                    </div>
+                </form>
         </div>
     </div>
 </section>
