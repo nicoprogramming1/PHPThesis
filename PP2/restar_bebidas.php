@@ -160,22 +160,23 @@ require_once 'header.inc.php'; ?>
                                                 // Obtener el ID de la recepción seleccionada desde la URL
                                                 $idRecepcionModificar = $_GET['id'];
                                             }
-
+                                    
                                             if ($idRecepcionModificar) {
                                                 // Cargar los datos de la recepción seleccionada desde la base de datos
                                                 $recepcionAModificar = ObtenerRecepcionPorId($MiConexion, $idRecepcionModificar);
-
-                                                $idCompra = $recepcionAModificar['IDCOMPRA'];
+                                                $cantidadesBebidas = ExtraerCantidadBebidas($recepcionAModificar['DETALLEMERCADERIA']);
+                                    
                                                 foreach ($ListadoBebidas as $bebida) {
-                                                    $cantidadPredeterminada = ObtenerCantidadPredeterminadaParaModificarRecepcionCompra($MiConexion, $bebida['IDBEBIDA'], $idCompra);
-
+                                                    // Determinar la cantidad de la bebida correspondiente
+                                                    $cantidad = isset($cantidadesBebidas[$bebida['BEBIDA']]) ? $cantidadesBebidas[$bebida['BEBIDA']] : 0;
+                                    
                                                     // Muestra los datos en la tabla
                                                     echo '<tr>';
                                                     echo '<td>' . $bebida['IDBEBIDA'] . '</td>';
                                                     echo '<td>' . $bebida['BEBIDA'] . '</td>';
                                                     echo '<td>' . $bebida['MARCA'] . '</td>';
                                                     echo '<td>' . $bebida['VOLUMEN'] . '</td>';
-                                                    echo '<td>' . '<input type="text" name="cantidad_' . $bebida['IDBEBIDA'] . '" value="' . $cantidadPredeterminada . '">' . '</td>';
+                                                    echo '<td>' . '<input type="text" name="cantidad_' . $bebida['IDBEBIDA'] . '" value="' . $cantidad . '">' . '</td>';
                                                     echo '</tr>';
                                                 }
                                             }

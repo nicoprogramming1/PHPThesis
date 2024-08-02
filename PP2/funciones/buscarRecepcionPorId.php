@@ -31,4 +31,22 @@ function ObtenerRecepcionPorId($vConexion, $idRecepcionCompra) {
 
     return $recepcionCompra;
 }
+
+function ExtraerCantidadBebidas($detalleMercaderia) {
+    $cantidadesBebidas = [];
+
+    // Separar cada línea de detalle de mercadería
+    $lineas = explode("\n", $detalleMercaderia);
+    foreach ($lineas as $linea) {
+        $partes = explode(" - ", $linea);
+        if (count($partes) === 3) {
+            $bebida = trim($partes[0]);
+            $cantidad = trim($partes[2]);
+            $cantidadesBebidas[$bebida] = $cantidad;
+        }
+    }
+
+    return $cantidadesBebidas;
+}
+
 ?>

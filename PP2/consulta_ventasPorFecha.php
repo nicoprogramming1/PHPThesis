@@ -119,7 +119,6 @@ require_once 'header.inc.php';
                                             <div class="form-group col-md-2">
                                                 <button type="submit" class="btn btn-primary" name="BotonConsultar">Consultar</button>
                                                 <input type="hidden" name="BotonConsultar" value="1">
-                                                <?php require_once 'boton.imprimir.inc.php'; ?>
                                             </div>
                                         </div>
                                         <table class="table table-responsive"  style="overflow-y: auto; max-height: 400px;">
@@ -179,6 +178,7 @@ require_once 'header.inc.php';
                                             ?>
                                         </tbody>
                                     </table>
+                                    <?php require_once 'boton.imprimir.inc.php'; ?>
                                 </form>
                             </div>
                         </div>
