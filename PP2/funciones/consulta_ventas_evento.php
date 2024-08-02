@@ -19,11 +19,9 @@ function countVentasEvento($MiConexion, $idEvento)
 
 function totalVentasEvento($MiConexion, $idEvento)
 {
-    $sql = "SELECT SUM(tt.precioTicket) AS GANANCIA
+    $sql = "SELECT SUM(dv.totalVenta) AS GANANCIA
             FROM evento e
-            LEFT JOIN detalle_venta dv ON e.idEvento = dv.idEvento
-            LEFT JOIN detalleventa_tipoticket dvt ON dv.idDetalleVenta = dvt.idDetalleVenta
-            LEFT JOIN tipo_ticket tt ON dvt.idTipoTicket = tt.idTipoTicket
+            INNER JOIN detalle_venta dv ON e.idEvento = dv.idEvento
             WHERE e.idEvento = ?";
 
     $stmt = $MiConexion->prepare($sql);
@@ -38,4 +36,5 @@ function totalVentasEvento($MiConexion, $idEvento)
         return 0; // Si no se encontraron ventas, la ganancia es cero
     }
 }
+
 ?>

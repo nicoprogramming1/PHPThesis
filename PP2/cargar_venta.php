@@ -13,11 +13,14 @@ $MiConexion = ConexionBD();
 
 require_once 'funciones/validaciones.php';
 require_once 'funciones/select_tipoTickets.php';
+require_once 'funciones/restarBebidas.php';
+require_once 'funciones/buscarBebidaPorId.php';
+require_once 'funciones/select_eventos.php';
+
 $ListadoTipoTickets = Listar_tipoTickets($MiConexion);
 $CantidadTipotickets = count($ListadoTipoTickets);
 
-require_once 'funciones/restarBebidas.php';
-require_once 'funciones/buscarBebidaPorId.php';
+$ListadoEventos = Listar_Eventos($MiConexion);
 
 $Mensaje = '';
 $Estilo = 'warning';
@@ -39,23 +42,12 @@ if (!empty($_POST['BotonRegistrar'])) {
             }
         }
 
-        $queryBuscarEvento = "SELECT idEvento FROM evento ORDER BY fechaEvento DESC LIMIT 1";
-        $resultadoEvento = mysqli_query($MiConexion, $queryBuscarEvento);
-        $idEvento = null;
-        if (mysqli_num_rows($resultadoEvento) > 0) {
-            $filaEvento = mysqli_fetch_assoc($resultadoEvento);
-            $idEvento = $filaEvento['idEvento'];
-        }
+        $idEvento = $_POST['idEvento'];
 
         if ($idEvento === null) {
-            $Mensaje = 'No hay evento registrado en la tabla evento.';
+            $Mensaje = 'Debe seleccionar un evento.';
             $Estilo = 'danger';
         } else {
-            $Mensaje = 'No hay evento registrado en la tabla evento.';
-            $Estilo = 'danger';
-        }
-
-        if ($idEvento > 0) {
             $queryInsertVenta = "INSERT INTO venta (horaVenta, fechaVenta, idCajero) VALUES ('$horaVenta', '$fechaVenta', '$idCajero')";
             mysqli_query($MiConexion, $queryInsertVenta);
 
@@ -207,7 +199,20 @@ require_once 'header.inc.php';
                                                 <?php require_once 'listado.tipoTickets.ventas.inc.php'; ?>                                
                                             </tbody>
                                         </table>
-                                        <span id="total">Total: $ 0.00</span>
+                                        <span id="total">Total: $ 0.00</span></br></br>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="idEvento">Seleccione un evento:</label>
+                                        <select class="form-control" id="idEvento" name="idEvento">
+                                            <option value="">Seleccione un evento</option>
+                                            <?php foreach ($ListadoEventos as $evento) { ?>
+                                                <option value="<?php echo $evento['IDEVENTO']; ?>">
+                                                    <?php echo $evento['DETALLEEVENTO'] . ' - ' . date('d/m/Y', strtotime($evento['FECHAEVENTO'])); ?>
+                                                </option>
+                                            <?php } ?>
+                                        </select>
                                     </div>
                                 </div>
                             </div>

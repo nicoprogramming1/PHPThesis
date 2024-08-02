@@ -10,9 +10,9 @@ foreach ($ListadoVentas as $venta) {
     $cajero = ObtenerUsuarioPorID($MiConexion, $idCajero);
     $apellidoCajero = $cajero['APELLIDO'];
     echo '<td>' . $apellidoCajero . '</td>';
-
-    echo '<td>' . $venta['HORAVENTA'] . '</td>';
     echo '<td>' . $venta['FECHAVENTA'] . '</td>';
+    echo '<td>' . $venta['HORAVENTA'] . '</td>';
+    
     
     // buscamos el estado de la venta
     $idEstado = $venta['IDESTADO'];
