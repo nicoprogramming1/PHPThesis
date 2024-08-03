@@ -4,7 +4,8 @@ function Listar_Facturas($vConexion) {
 
     $SQL = "SELECT f.nroFactura, f.idFactura, f.fechaFactura, d.total, e.estadoFactura, p.nombreProveedor
     FROM factura f, detalle_factura d, estado_factura e, proveedor p
-    WHERE d.idFactura = f.idFactura AND d.idProveedor = p.idProveedor AND e.idEstadoFactura = f.idEstadoFactura";
+    WHERE d.idFactura = f.idFactura AND d.idProveedor = p.idProveedor AND e.idEstadoFactura = f.idEstadoFactura
+    ORDER BY f.fechaFactura DESC";
 
     $rs = mysqli_query($vConexion, $SQL);
 

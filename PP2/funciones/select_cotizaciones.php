@@ -2,7 +2,8 @@
 function Listar_Cotizaciones($conexion) {
     $cotizaciones = array();
     $SQL = "SELECT p.nombreProveedor, c.idCotizacion, c.fechaCotizacion, c.cotizacionImagen, c.cotizacionTexto, c.detalleCotizacion    FROM proveedor p
-            LEFT JOIN cotizacion c ON p.idProveedor = c.idProveedor";
+            LEFT JOIN cotizacion c ON p.idProveedor = c.idProveedor
+            ORDER BY c.fechaCotizacion DESC";
 
     $resultado = mysqli_query($conexion, $SQL);
 

@@ -8,7 +8,8 @@ function Listar_Compras($vConexion) {
             INNER JOIN detalle_compra dc ON dc.idFactura = f.idFactura
             INNER JOIN compra c ON dc.idCompra = c.idCompra
             INNER JOIN estado_compra e ON e.idEstadoCompra = c.idEstadoCompra
-            INNER JOIN proveedor p ON df.idProveedor = p.idProveedor";
+            INNER JOIN proveedor p ON df.idProveedor = p.idProveedor
+            ORDER BY c.fechaCompra DESC";
 
     $rs = mysqli_query($vConexion, $SQL);
 

@@ -168,7 +168,7 @@ require_once 'header.inc.php'; ?>
                                         <option value="">Seleccionar recepcion de compra</option>
                                         <?php
                                         foreach ($ListadoRecepciones as $recepcion) {
-                                            echo '<option value="' . $recepcion['IDRECEPCIONCOMPRA'] . '">ID= ' . $recepcion['IDRECEPCIONCOMPRA'] . ' | ' . $recepcion['FECHARECEPCIONCOMPRA'] . '</option>';
+                                            echo '<option value="' . $recepcion['IDRECEPCIONCOMPRA'] . '">ID= ' . $recepcion['IDRECEPCIONCOMPRA'] . ' | ' . $recepcion['FECHARECEPCIONCOMPRA'] . ' | Nro Remito: ' . $recepcion['NROREMITO'] . '</option>';
                                         }
                                         ?>
                                     </select>

@@ -225,7 +225,22 @@ require_once 'header.inc.php';
 
                         <div class="mb-3">
 						    <label for="cotizacionImagen" class="form-label">Cotización</label>
-						    <img src="data:image/jpeg;base64,<?php echo base64_encode($cotizacionImagen); ?>" class="img-fluid" alt="Cotización">
+							<?php
+						    $imagenCodificada = $cotizacionDetalle['COTIZACIONIMAGEN'];
+                            $imagenDecodificada = base64_decode($imagenCodificada);
+
+                            // Verificar si la decodificación tuvo éxito y si es una imagen válida
+                            if ($imagenDecodificada !== false) {
+                                // Obtener información sobre el tipo MIME de la imagen para establecer el encabezado adecuado
+                                $finfo = new finfo(FILEINFO_MIME_TYPE);
+                                $tipoImagen = $finfo->buffer($imagenDecodificada);
+
+                                // Mostrar la imagen si es válida
+                                echo '<img src="data:' . $tipoImagen . ';base64,' . $imagenCodificada . '" class="img-fluid">';
+                            } else {
+                                echo 'Error al decodificar la imagen.';
+                            }
+                            ?>
 						</div>
 
 						<div class="mb-3">
